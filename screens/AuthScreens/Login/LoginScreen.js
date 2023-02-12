@@ -20,7 +20,7 @@ const initialState = {
   password: "",
 };
 
-export default function RegistrationScreen() {
+export default function LoginScreen() {
   const [isShowPass, setIsShowPass] = useState(true);
   const [isActive, setIsActive] = useState("");
   const [formState, setFormState] = useState(initialState);
