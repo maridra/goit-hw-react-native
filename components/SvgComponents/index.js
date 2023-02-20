@@ -1,0 +1,16 @@
+export { default as AddIcon } from "./AddIcon";
+export { default as DeleteBtn } from "./DeleteIcon";
+export { default as LocationIcon } from "./LocationIcon";
+export { default as LikeIcon } from "./LikeIcon";
+export { default as CommentIcon } from "./CommentIcon";
+export { default as LikeInactive } from "./LikeInactive";
+export { default as CommentInactive } from "./CommentInactive";
+export { default as CameraUploadIcon } from "./CameraUploadIcon";
+export { default as CameraEditIcon } from "./CameraEditIcon";
+export { default as SendCommentIcon } from "./SendCommentIcon";
+export { default as LogoutIcon } from "./LogoutIcon";
+export { default as CreatePostIcon } from "./CreatePostIcon";
+export { default as PostsScreenIcon } from "./PostsScreenIcon";
+export { default as ProfileScreenIcon } from "./ProfileScreenIcon";
+export { default as BasketIcon } from "./BasketIcon";
+export { default as GoBackIcon } from "./GoBackIcon";

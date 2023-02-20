@@ -11,15 +11,10 @@ const {
   activeField,
   showPass,
   authNav,
+  navText,
 } = commonStyles;
 
 const styles = StyleSheet.create({
-  container: {
-    ...mainContainer,
-  },
-  image: {
-    ...bgImage,
-  },
   authContainer: {
     ...authContainer,
   },
@@ -43,6 +38,9 @@ const styles = StyleSheet.create({
   nav: {
     ...authNav,
     marginTop: 16,
+  },
+  navText: {
+    ...navText,
   },
   avatarBox: {
     position: "absolute",

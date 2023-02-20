@@ -11,6 +11,7 @@ const {
   activeField,
   showPass,
   authNav,
+  navText,
 } = commonStyles;
 
 const styles = StyleSheet.create({
@@ -43,6 +44,9 @@ const styles = StyleSheet.create({
   nav: {
     ...authNav,
     marginTop: 16,
+  },
+  navText: {
+    ...navText,
   },
 });
 

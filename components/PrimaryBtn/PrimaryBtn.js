@@ -1,13 +1,19 @@
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
-export default function PrimaryBtn({ title, onPress }) {
+export default function PrimaryBtn({ title, onPress, disabled }) {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      style={styles.btn}
+      style={
+        !disabled ? styles.btn : { ...styles.btn, backgroundColor: "#F6F6F6" }
+      }
       onPress={onPress}
     >
-      <Text style={styles.text}>{title}</Text>
+      <Text
+        style={!disabled ? styles.text : { ...styles.text, color: "#BDBDBD" }}
+      >
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 }

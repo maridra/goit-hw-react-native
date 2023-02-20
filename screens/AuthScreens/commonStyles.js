@@ -25,7 +25,6 @@ const commonStyles = {
   },
   form: {
     alignSelf: "center",
-    // marginHorizontal: 16,
   },
   authTitle: {
     fontFamily: "Roboto-Medium",
@@ -58,6 +57,8 @@ const commonStyles = {
   },
   authNav: {
     alignSelf: "center",
+  },
+  navText: {
     color: "#1B4371",
     fontFamily: "Roboto-Regular",
     fontSize: 16,

@@ -1,21 +1,19 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import "react-native-gesture-handler";
+import { NavigationContainer } from "@react-navigation/native";
+import {
+  ProfileScreen,
+  CommentsScreen,
+  RegistrationScreen,
+  PostsScreen,
+  CreatePostsScreen,
+  LoginScreen,
+} from "./screens";
 
-import { RegistrationScreen, LoginScreen } from "./screens";
+import useRoute from "./routes/useRoute";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <RegistrationScreen />
-      {/* <LoginScreen /> */}
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const rouring = useRoute(true);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-});
+  return <NavigationContainer>{rouring}</NavigationContainer>;
+  // return <PostsScreen />;
+}

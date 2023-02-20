@@ -1,20 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
-  ImageBackground,
   Text,
   View,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Dimensions,
+  useWindowDimensions,
   Image,
 } from "react-native";
 
-import { PrimaryBtn, AddIcon, DeleteBtn } from "../../../components";
-import { useFont } from "../../../hooks";
+import {
+  PrimaryBtn,
+  AddIcon,
+  DeleteBtn,
+  KeyboardContainer,
+} from "../../../components";
 import styles from "./styles";
 
 const initialState = {
@@ -24,170 +23,142 @@ const initialState = {
 };
 
 const avatarPlug = require("../../../assets/images/photo-plug.png");
-const bgImg = require("../../../assets/images/bg-photo.png");
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ navigation }) {
   const [isShowPass, setIsShowPass] = useState(true);
   const [isShowPhoto, setIsShowPhoto] = useState(false);
   const [isActive, setIsActive] = useState("");
   const [formState, setFormState] = useState(initialState);
-  const [dimensions, setDimensions] = useState(
-    Dimensions.get("window").width - 16 * 2
-  );
 
-  useEffect(() => {
-    const onChange = () => {
-      const width = Dimensions.get("window").width - 16 * 2;
-
-      setDimensions(width);
-    };
-    const subscription = Dimensions.addEventListener("change", onChange);
-
-    return () => subscription?.remove();
-  }, []);
-
-  const { isFontLoaded, onLayoutRootView } = useFont();
-
-  if (!isFontLoaded) {
-    return null;
-  }
+  const { width } = useWindowDimensions();
 
   const toggleShowPass = () => setIsShowPass((isShowPass) => !isShowPass);
   const toggleShowPhoto = () => setIsShowPhoto((isShowPhoto) => !isShowPhoto);
   const inputBlur = () => setIsActive("");
-  const keyboadHide = () => Keyboard.dismiss();
   const onSubmit = () => {
     console.log(formState);
     setFormState(initialState);
   };
 
   return (
-    <TouchableWithoutFeedback onPress={keyboadHide}>
+    <KeyboardContainer
+      keyboardStyle={{ justifyContent: "flex-end" }}
+      isBgImg={true}
+    >
       <View
-        style={styles.container}
-        onLayout={onLayoutRootView}
+        style={{
+          ...styles.authContainer,
+          height: !isActive ? 549 : 374,
+        }}
       >
-        <ImageBackground
-          style={styles.image}
-          source={bgImg}
+        <View style={styles.avatarBox}>
+          {!isShowPhoto ? (
+            <View style={styles.avatar} />
+          ) : (
+            <Image source={avatarPlug} />
+          )}
+          <TouchableOpacity onPress={toggleShowPhoto}>
+            {!isShowPhoto ? (
+              <AddIcon style={styles.avatarBtn} />
+            ) : (
+              <DeleteBtn style={styles.avatarBtn} />
+            )}
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.title}>Sign Up</Text>
+        <View
+          style={{
+            ...styles.form,
+            width: width - 16 * 2,
+            marginBottom: !isActive ? 49 : 32,
+          }}
         >
-          <KeyboardAvoidingView
-            style={{ flex: 1, justifyContent: "flex-end" }}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-          >
-            <View
-              style={{ ...styles.authContainer, height: !isActive ? 549 : 374 }}
+          <TextInput
+            style={
+              isActive === "login" ? styles.inputActive : styles.inputInactive
+            }
+            placeholder="Login"
+            value={formState.login}
+            onChangeText={(value) =>
+              setFormState((prevState) => ({
+                ...prevState,
+                login: value,
+              }))
+            }
+            onFocus={() => setIsActive("login")}
+            onBlur={inputBlur}
+          />
+
+          <TextInput
+            style={
+              isActive === "email"
+                ? { ...styles.inputActive, marginTop: 16 }
+                : {
+                    ...styles.inputInactive,
+                    marginTop: 16,
+                  }
+            }
+            placeholder="Email address"
+            value={formState.email}
+            onChangeText={(value) =>
+              setFormState((prevState) => ({
+                ...prevState,
+                email: value,
+              }))
+            }
+            onFocus={() => setIsActive("email")}
+            onBlur={inputBlur}
+          />
+
+          <View>
+            <TextInput
+              style={
+                isActive === "password"
+                  ? { ...styles.inputActive, marginTop: 16 }
+                  : {
+                      ...styles.inputInactive,
+                      marginTop: 16,
+                    }
+              }
+              secureTextEntry={isShowPass}
+              placeholder="Password"
+              value={formState.password}
+              onChangeText={(value) =>
+                setFormState((prevState) => ({
+                  ...prevState,
+                  password: value,
+                }))
+              }
+              onFocus={() => setIsActive("password")}
+              onBlur={inputBlur}
+            />
+            <Text
+              style={styles.showPassword}
+              onPress={toggleShowPass}
             >
-              <View style={styles.avatarBox}>
-                {!isShowPhoto ? (
-                  <View style={styles.avatar} />
-                ) : (
-                  <Image source={avatarPlug} />
-                )}
-                <TouchableOpacity onPress={toggleShowPhoto}>
-                  {!isShowPhoto ? (
-                    <AddIcon style={styles.avatarBtn} />
-                  ) : (
-                    <DeleteBtn style={styles.avatarBtn} />
-                  )}
-                </TouchableOpacity>
-              </View>
-              <Text style={styles.title}>Sign Up</Text>
-              <View
-                style={{
-                  ...styles.form,
-                  width: dimensions,
-                  marginBottom: !isActive ? 49 : 32,
-                }}
-              >
-                <TextInput
-                  style={
-                    isActive === "login"
-                      ? styles.inputActive
-                      : {
-                          ...styles.inputInactive,
-                          color: !formState.login ? "#BDBDBD" : "#212121",
-                        }
-                  }
-                  placeholder="Login"
-                  value={formState.login}
-                  onChangeText={(value) =>
-                    setFormState((prevState) => ({
-                      ...prevState,
-                      login: value,
-                    }))
-                  }
-                  onFocus={() => setIsActive("login")}
-                  onBlur={inputBlur}
-                />
-
-                <TextInput
-                  style={
-                    isActive === "email"
-                      ? { ...styles.inputActive, marginTop: 16 }
-                      : {
-                          ...styles.inputInactive,
-                          marginTop: 16,
-                          color: !formState.email ? "#BDBDBD" : "#212121",
-                        }
-                  }
-                  placeholder="Email address"
-                  value={formState.email}
-                  onChangeText={(value) =>
-                    setFormState((prevState) => ({
-                      ...prevState,
-                      email: value,
-                    }))
-                  }
-                  onFocus={() => setIsActive("email")}
-                  onBlur={inputBlur}
-                />
-
-                <View>
-                  <TextInput
-                    style={
-                      isActive === "password"
-                        ? { ...styles.inputActive, marginTop: 16 }
-                        : {
-                            ...styles.inputInactive,
-                            marginTop: 16,
-                            color: !formState.password ? "#BDBDBD" : "#212121",
-                          }
-                    }
-                    secureTextEntry={isShowPass}
-                    placeholder="Password"
-                    value={formState.password}
-                    onChangeText={(value) =>
-                      setFormState((prevState) => ({
-                        ...prevState,
-                        password: value,
-                      }))
-                    }
-                    onFocus={() => setIsActive("password")}
-                    onBlur={inputBlur}
-                  />
-                  <Text
-                    style={styles.showPassword}
-                    onPress={toggleShowPass}
-                  >
-                    Show password
-                  </Text>
-                </View>
-              </View>
-              {!isActive && (
-                <>
-                  <PrimaryBtn
-                    title="Sign up"
-                    style={styles.primaryBtn}
-                    onPress={onSubmit}
-                  />
-                  <Text style={styles.nav}>Already have an account? Login</Text>
-                </>
-              )}
-            </View>
-          </KeyboardAvoidingView>
-        </ImageBackground>
+              Show password
+            </Text>
+          </View>
+        </View>
+        {!isActive && (
+          <>
+            <PrimaryBtn
+              title="Sign up"
+              style={styles.primaryBtn}
+              onPress={onSubmit}
+            />
+            <TouchableOpacity
+              style={styles.nav}
+              activeOpacity={0.6}
+              onPress={() => navigation.navigate("Login")}
+            >
+              <Text style={styles.navText}>
+                Already have an account? Sign in
+              </Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
-    </TouchableWithoutFeedback>
+    </KeyboardContainer>
   );
 }
