@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Text, View, TouchableOpacity, Image } from "react-native";
+import { Text, View, Image } from "react-native";
 
 import { CameraEditPhoto, CameraUploadIcon } from "../SvgComponents";
 import styles from "./styles";

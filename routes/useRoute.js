@@ -1,6 +1,5 @@
 import React from "react";
 import AuthNav from "./authNav";
-import MainNav from "./mainNav/mainNav";
 import OtherNav from "./otherNav";
 
 export default function useRoute(isAuth) {
@@ -9,6 +8,4 @@ export default function useRoute(isAuth) {
   } else {
     return <OtherNav />;
   }
-
-  return null;
 }
