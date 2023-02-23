@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   img: {
+    height: 240,
     width: "100%",
     resizeMode: "cover",
     borderRadius: 8,

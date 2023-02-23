@@ -16,6 +16,7 @@ export default function PostItem({
   comments,
   likes,
   location,
+  locationData,
   navigation,
 }) {
   const { isFontLoaded, onLayoutRootView } = useFont();
@@ -31,7 +32,7 @@ export default function PostItem({
     >
       <Image
         style={styles.img}
-        source={img}
+        source={{ uri: img }}
       />
       <Text style={styles.title}>{title}</Text>
       <View style={styles.dataWrapper}>
@@ -81,7 +82,7 @@ export default function PostItem({
         <View style={styles.data}>
           <TouchableOpacity
             activeOpacity={0.6}
-            onPress={() => navigation.navigate("Location")}
+            onPress={() => navigation.navigate("Location", {location, locationData})}
           >
             <LocationIcon />
           </TouchableOpacity>

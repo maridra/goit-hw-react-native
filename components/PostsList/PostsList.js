@@ -4,15 +4,11 @@ import { SafeAreaView, FlatList, View } from "react-native";
 import PostItem from "./PostItem";
 import styles from "./styles";
 
-import { postsList } from "../../data";
-
-export default function PostsList({ style = {}, nav }) {
-  const [posts, setPostsList] = useState(postsList);
-
+export default function PostsList({ style = {}, nav, allPosts }) {
   return (
     <SafeAreaView style={{ ...styles.container, ...style }}>
       <FlatList
-        data={posts}
+        data={allPosts}
         renderItem={({ item }) => (
           <PostItem
             img={item.img}
@@ -20,6 +16,7 @@ export default function PostsList({ style = {}, nav }) {
             comments={item.commentsCount}
             likes={item.likesCount}
             location={item.location}
+            locationData={item.locationData}
             navigation={nav}
           />
         )}

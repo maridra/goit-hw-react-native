@@ -17,10 +17,10 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     paddingHorizontal: 16,
-    marginBottom: 16,
-    height: 50,
+    paddingBottom: 16,
   },
   input: {
+    height: 50,
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,

@@ -1,47 +1,85 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Text, View, TextInput, TouchableOpacity, Image } from "react-native";
+import * as Location from "expo-location";
+import uuid from "react-native-uuid";
 
 import {
   CameraEditIcon,
-  CameraUploadIcon,
   LocationIcon,
   BasketIcon,
   PrimaryBtn,
   KeyboardContainer,
+  CameraField,
 } from "../../../components";
 import styles from "./styles";
 
 const initialState = {
-  img: false,
-  pictureName: "",
+  img: "",
+  title: "",
   location: "",
 };
 
-const imgPlug = require("../../../assets/images/img1.png");
-
-export default function CreatePostsScreen() {
+export default function CreatePostsScreen({ navigation }) {
+  const [photoUri, setPhotoUri] = useState("");
   const [formState, setFormState] = useState(initialState);
+  const [locationData, setLocationData] = useState(null);
   const [isActive, setIsActive] = useState("");
 
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      const coords = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      setLocationData(coords);
+    })();
+  }, []);
+
   const onSubmit = () => {
-    console.log(formState);
     setFormState(initialState);
+    setPhotoUri("");
+
+    const initialPost = {
+      id: uuid.v4(),
+      commentsCount: 0,
+      likesCount: 0,
+      comments: [],
+    };
+
+    const newPost = { ...initialPost, ...formState, locationData };
+    // console.log(newPost);
+    navigation.navigate("Posts", newPost);
   };
 
   const onReset = () => {
     setFormState(initialState);
+    setPhotoUri("");
   };
 
-  const toggleIsImg = () =>
+  const onTakePhotoClick = (photo) => {
+    setPhotoUri(photo);
     setFormState((prevState) => ({
       ...prevState,
-      img: !formState.img,
+      img: photo,
     }));
+  };
+
+  const onTakePhotoReset = () => {
+    setPhotoUri("");
+    setFormState((prevState) => ({
+      ...prevState,
+      img: "",
+    }));
+  };
 
   const isDisabledBtn =
-    !formState.img || !formState.pictureName || !formState.location
-      ? true
-      : false;
+    !formState.img || !formState.title || !formState.location ? true : false;
 
   const inputBlur = () => setIsActive("");
 
@@ -51,22 +89,28 @@ export default function CreatePostsScreen() {
         <View style={styles.form}>
           <View style={{ marginBottom: 32 }}>
             <View style={styles.imgWrapper}>
-              {formState.img && (
-                <Image
-                  style={styles.img}
-                  source={imgPlug}
+              {!photoUri ? (
+                <CameraField
+                  photoUri={photoUri}
+                  setPhotoUri={onTakePhotoClick}
                 />
+              ) : (
+                <>
+                  <Image
+                    source={{ uri: photoUri }}
+                    style={styles.img}
+                  />
+                  <TouchableOpacity
+                    onPress={onTakePhotoReset}
+                    style={styles.cameraBtn}
+                  >
+                    <CameraEditIcon />
+                  </TouchableOpacity>
+                </>
               )}
-
-              <TouchableOpacity
-                style={styles.cameraBtn}
-                onPress={toggleIsImg}
-              >
-                {!formState.img ? <CameraUploadIcon /> : <CameraEditIcon />}
-              </TouchableOpacity>
             </View>
             <Text style={styles.text}>
-              {!formState.img ? "Upload a photo" : "Edit photo"}
+              {!photoUri ? "Upload a photo" : "Edit photo"}
             </Text>
           </View>
           <View style={{ marginBottom: 32 }}>
@@ -77,11 +121,11 @@ export default function CreatePostsScreen() {
                   : { ...styles.input, ...styles.inputActive }
               }
               placeholder="Picture name"
-              value={formState.pictureName}
+              value={formState.title}
               onChangeText={(value) =>
                 setFormState((prevState) => ({
                   ...prevState,
-                  pictureName: value,
+                  title: value,
                 }))
               }
               onFocus={() => setIsActive("pictureName")}

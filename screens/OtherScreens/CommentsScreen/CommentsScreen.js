@@ -25,7 +25,9 @@ export default function CommentsScreen() {
   const [commentInput, setCommentInput] = useState(initialState);
   const [isActive, setIsActive] = useState(false);
 
-  const inputBlur = () => setIsActive("");
+  const inputBlur = () => {
+    setIsActive(false);
+  };
 
   const onSubmit = () => {
     console.log(commentInput);
@@ -35,8 +37,8 @@ export default function CommentsScreen() {
 
   return (
     <KeyboardContainer
-      containerStyle={styles.container}
-      keyboardStyle={{ justifyContent: "flex-end" }}
+      containerStyle={{ ...styles.container }}
+      keyboardStyle={{ justifyContent: "flex-end", maxHeight: "100%" }}
     >
       <>
         <FlatList

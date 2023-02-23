@@ -18,15 +18,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     backgroundColor: "#F6F6F6",
+    overflow: "hidden",
   },
   img: {
     width: "100%",
     height: "100%",
     resizeMode: "cover",
-    borderRadius: 8,
   },
   cameraBtn: {
+    flex: 1,
     position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    backgroundColor: "transparent",
   },
   text: {
     marginTop: 8,

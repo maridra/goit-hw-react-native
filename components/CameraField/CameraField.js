@@ -1,32 +1,49 @@
 import { useState } from "react";
-import { Text, View, Image } from "react-native";
+import { Text, View, TouchableOpacity, Image } from "react-native";
+import { Camera, CameraType } from "expo-camera";
 
-import { CameraEditPhoto, CameraUploadIcon } from "../SvgComponents";
+import { CameraEditIcon, CameraUploadIcon } from "../SvgComponents";
+import { PrimaryBtn } from "../PrimaryBtn/PrimaryBtn";
 import styles from "./styles";
 
-export default function CameraField({ img, isImgUpload }) {
-  const [isImg, setIsImg] = useState(isImgUpload);
+export default function CameraField({ photoUri, setPhotoUri }) {
+  const [camera, setCamera] = useState(null);
 
-  console.log(isImg);
+  const [permission, requestPermission] = Camera.useCameraPermissions();
+
+  if (!permission) {
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    return (
+      <View style={styles.permissionView}>
+        <Text style={styles.permissionText}>
+          Please, give permission to use the camera
+        </Text>
+        <PrimaryBtn
+          onPress={requestPermission}
+          title="Grant permission"
+        />
+      </View>
+    );
+  }
+
+  const takePhoto = async () => {
+    const photo = await camera.takePictureAsync();
+    setPhotoUri(photo.uri);
+  };
 
   return (
-    <View>
-      <View style={styles.imgWrapper}>
-        {isImg && (
-          <Image
-            style={styles.img}
-            source={img}
-          />
-        )}
-        {!isImg ? (
-          <CameraUploadIcon style={styles.cameraBtn} />
-        ) : (
-          <CameraEditPhoto style={styles.cameraBtn} />
-        )}
+    <Camera
+      style={styles.camera}
+      ref={setCamera}
+    >
+      <View style={styles.btnContainer}>
+        <TouchableOpacity onPress={takePhoto}>
+          <CameraUploadIcon />
+        </TouchableOpacity>
       </View>
-      <Text style={styles.text}>
-        {!isImg ? "Upload a photo" : "Edit photo"}
-      </Text>
-    </View>
+    </Camera>
   );
 }
