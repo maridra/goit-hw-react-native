@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { SafeAreaView, FlatList, View } from "react-native";
+import { SafeAreaView, FlatList } from "react-native";
 
 import PostItem from "./PostItem";
 import styles from "./styles";
