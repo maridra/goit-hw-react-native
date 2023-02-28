@@ -6,8 +6,10 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
+import { useDispatch } from "react-redux";
 
 import { PrimaryBtn, KeyboardContainer } from "../../../components";
+import authOperations from "../../../redux/auth/authOperations";
 import styles from "./styles";
 
 const initialState = {
@@ -22,6 +24,8 @@ export default function LoginScreen({ navigation }) {
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 16 * 2
   );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const onChange = () => {
@@ -38,8 +42,8 @@ export default function LoginScreen({ navigation }) {
   const inputBlur = () => setIsActive("");
 
   const onSubmit = () => {
-    console.log(formState);
     setFormState(initialState);
+    dispatch(authOperations.authSignInUser(formState));
   };
 
   return (

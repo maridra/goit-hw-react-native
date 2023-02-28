@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Text,
   View,
@@ -13,7 +14,9 @@ import {
   AddIcon,
   DeleteBtn,
   KeyboardContainer,
+  Avatar,
 } from "../../../components";
+import authOperations from "../../../redux/auth/authOperations";
 import styles from "./styles";
 
 const initialState = {
@@ -25,10 +28,13 @@ const initialState = {
 const avatarPlug = require("../../../assets/images/photo-plug.png");
 
 export default function RegistrationScreen({ navigation }) {
+  const [avatarImg, setAvatarImg] = useState("");
+  const [formState, setFormState] = useState(initialState);
   const [isShowPass, setIsShowPass] = useState(true);
   const [isShowPhoto, setIsShowPhoto] = useState(false);
   const [isActive, setIsActive] = useState("");
-  const [formState, setFormState] = useState(initialState);
+
+  const dispatch = useDispatch();
 
   const { width } = useWindowDimensions();
 
@@ -36,8 +42,10 @@ export default function RegistrationScreen({ navigation }) {
   const toggleShowPhoto = () => setIsShowPhoto((isShowPhoto) => !isShowPhoto);
   const inputBlur = () => setIsActive("");
   const onSubmit = () => {
-    console.log(formState);
     setFormState(initialState);
+    dispatch(
+      authOperations.authSignUpUser({ ...formState, photoURL: avatarImg })
+    );
   };
 
   return (
@@ -52,18 +60,10 @@ export default function RegistrationScreen({ navigation }) {
         }}
       >
         <View style={styles.avatarBox}>
-          {!isShowPhoto ? (
-            <View style={styles.avatar} />
-          ) : (
-            <Image source={avatarPlug} />
-          )}
-          <TouchableOpacity onPress={toggleShowPhoto}>
-            {!isShowPhoto ? (
-              <AddIcon style={styles.avatarBtn} />
-            ) : (
-              <DeleteBtn style={styles.avatarBtn} />
-            )}
-          </TouchableOpacity>
+          <Avatar
+            avatar={avatarImg}
+            setAvatar={setAvatarImg}
+          />
         </View>
         <Text style={styles.title}>Sign Up</Text>
         <View

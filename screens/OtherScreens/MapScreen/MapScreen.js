@@ -9,8 +9,8 @@ export default function MapScreen({ route }) {
       style={styles.mapContainer}
       initialRegion={{
         ...locationData,
-        latitudeDelta: 0.06,
-        longitudeDelta: 0.06,
+        latitudeDelta: 0.02,
+        longitudeDelta: 0.02,
       }}
     >
       <Marker

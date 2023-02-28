@@ -11,6 +11,7 @@ import {
 import styles from "./styles";
 
 export default function PostItem({
+  postId,
   img,
   title,
   comments,
@@ -39,13 +40,20 @@ export default function PostItem({
         <View style={styles.socialData}>
           <View style={{ ...styles.data, marginRight: 24 }}>
             {!comments ? (
-              <TouchableOpacity activeOpacity={0.6}>
+              <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() =>
+                  navigation.navigate("Comments", { postId, postUri: img })
+                }
+              >
                 <CommentInactive />
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
                 activeOpacity={0.6}
-                onPress={() => navigation.navigate("Comments")}
+                onPress={() =>
+                  navigation.navigate("Comments", { postId, postUri: img })
+                }
               >
                 <CommentIcon />
               </TouchableOpacity>
@@ -82,7 +90,9 @@ export default function PostItem({
         <View style={styles.data}>
           <TouchableOpacity
             activeOpacity={0.6}
-            onPress={() => navigation.navigate("Location", {location, locationData})}
+            onPress={() =>
+              navigation.navigate("Location", { location, locationData })
+            }
           >
             <LocationIcon />
           </TouchableOpacity>

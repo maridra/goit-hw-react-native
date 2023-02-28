@@ -1,20 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Text, View, Image } from "react-native";
+
 import { useFont } from "../../../hooks";
 import { PostsList } from "../../../components";
+import { selectUser } from "../../../redux/auth/authSelectors";
+import postsOperations from "../../../redux/posts/postsOperations";
+import { selectAllPosts } from "../../../redux/posts/postsSelectors";
 import styles from "./styles";
 
-const avatarPlug = require("../../../assets/images/photo-plug.png");
+export default function PostsScreen({ navigation }) {
+  const user = useSelector(selectUser);
+  const posts = useSelector(selectAllPosts);
 
-export default function PostsScreen({ navigation, route }) {
-  const { isFontLoaded, onLayoutRootView } = useFont();
-  const [posts, setPosts] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
-    }
-  }, [route.params]);
+    dispatch(postsOperations.getAllPosts());
+  }, []);
+
+  const { isFontLoaded, onLayoutRootView } = useFont();
 
   if (!isFontLoaded) {
     return null;
@@ -28,11 +33,11 @@ export default function PostsScreen({ navigation, route }) {
       >
         <Image
           style={styles.avatar}
-          source={avatarPlug}
+          source={{ uri: user.userAvatar }}
         />
         <View>
-          <Text style={styles.username}>Natali Romanova</Text>
-          <Text style={styles.email}>email@example.com</Text>
+          <Text style={styles.username}>{user.username}</Text>
+          <Text style={styles.email}>{user.email}</Text>
         </View>
       </View>
       <PostsList

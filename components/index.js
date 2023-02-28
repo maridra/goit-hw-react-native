@@ -5,6 +5,7 @@ export { default as CommentItem } from "./Comment/CommentItem";
 export { default as CameraField } from "./CameraField/CameraField";
 export { default as GoBackBtn } from "./GoBackBtn/GoBackBtn";
 export { default as LogOutBtn } from "./LogOutBtn/LogOutBtn";
+export { default as Avatar } from "./Avatar/Avatar";
 
 export {
   SendCommentIcon,

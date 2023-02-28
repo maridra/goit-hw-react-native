@@ -10,8 +10,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 16,
   },
+  imgContainer: {
+    width: "100%",
+    height: 240,
+  },
   postImg: {
     width: "100%",
+    height: 240,
     resizeMode: "cover",
     borderRadius: 6,
   },

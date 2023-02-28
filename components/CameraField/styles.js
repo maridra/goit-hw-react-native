@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   permissionText: {
-    fontFamily: "Roboto-Regular",
+    // fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
     color: "#212121",

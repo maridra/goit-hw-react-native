@@ -11,6 +11,7 @@ export default function PostsList({ style = {}, nav, allPosts }) {
         data={allPosts}
         renderItem={({ item }) => (
           <PostItem
+            postId={item.id}
             img={item.img}
             title={item.title}
             comments={item.commentsCount}

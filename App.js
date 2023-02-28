@@ -1,11 +1,12 @@
 import "react-native-gesture-handler";
-import { NavigationContainer } from "@react-navigation/native";
-import useRoute from "./routes/useRoute";
-import { CommentsScreen } from "./screens";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import Main from "./components/Main";
 
 export default function App() {
-  const rouring = useRoute(true);
-
-  return <NavigationContainer>{rouring}</NavigationContainer>;
-  // return <CommentsScreen />;
+  return (
+    <Provider store={store}>
+      <Main />
+    </Provider>
+  );
 }

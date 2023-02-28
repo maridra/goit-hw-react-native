@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     alignSelf: "center",
     position: "absolute",
-    bottom: 0,
+    bottom: -10,
   },
 });
 

@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Text, View, TextInput, TouchableOpacity, Image } from "react-native";
 import * as Location from "expo-location";
 import uuid from "react-native-uuid";
+
+import uploadPhotoToServer, {
+  firebaseStore,
+} from "../../../helpers/uploadPhotoToServer";
+import postsOperations from "../../../redux/posts/postsOperations";
 
 import {
   CameraEditIcon,
@@ -20,10 +26,12 @@ const initialState = {
 };
 
 export default function CreatePostsScreen({ navigation }) {
-  const [photoUri, setPhotoUri] = useState("");
+  const [photoUri, setPhotoUri] = useState(null);
   const [formState, setFormState] = useState(initialState);
   const [locationData, setLocationData] = useState(null);
   const [isActive, setIsActive] = useState("");
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -41,20 +49,29 @@ export default function CreatePostsScreen({ navigation }) {
     })();
   }, []);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setFormState(initialState);
     setPhotoUri("");
 
-    const initialPost = {
+    const photoUrl = await uploadPhotoToServer(photoUri, firebaseStore.post);
+
+    const newPost = {
       id: uuid.v4(),
+      img: photoUrl,
+      title: formState.title,
       commentsCount: 0,
       likesCount: 0,
       comments: [],
+      location: formState.location,
+      locationData,
+      createdAt: Date.now(),
     };
 
-    const newPost = { ...initialPost, ...formState, locationData };
+    dispatch(postsOperations.uploadPostToServer(newPost));
+
+    // const newPost = { ...initialPost, ...formState, locationData };
     // console.log(newPost);
-    navigation.navigate("Posts", newPost);
+    navigation.navigate("Posts");
   };
 
   const onReset = () => {
@@ -90,10 +107,7 @@ export default function CreatePostsScreen({ navigation }) {
           <View style={{ marginBottom: 32 }}>
             <View style={styles.imgWrapper}>
               {!photoUri ? (
-                <CameraField
-                  photoUri={photoUri}
-                  setPhotoUri={onTakePhotoClick}
-                />
+                <CameraField setPhotoUri={onTakePhotoClick} />
               ) : (
                 <>
                   <Image

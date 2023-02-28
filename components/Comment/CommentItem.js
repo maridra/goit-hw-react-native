@@ -25,7 +25,7 @@ export default function CommentItem({ img, comment, date, isOwner }) {
             ? { ...styles.img, marginRight: 6 }
             : { ...styles.img, marginLeft: 6 }
         }
-        source={img}
+        source={{ uri: img }}
       />
       <View
         style={

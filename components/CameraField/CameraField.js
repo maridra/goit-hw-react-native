@@ -1,13 +1,14 @@
-import { useState } from "react";
-import { Text, View, TouchableOpacity, Image } from "react-native";
-import { Camera, CameraType } from "expo-camera";
+// import { useState, useRef } from "react";
+import { useRef } from "react";
+import { Camera } from "expo-camera";
+import { View, Text, TouchableOpacity } from "react-native";
 
-import { CameraEditIcon, CameraUploadIcon } from "../SvgComponents";
-import { PrimaryBtn } from "../PrimaryBtn/PrimaryBtn";
+import { CameraUploadIcon } from "../SvgComponents";
+import PrimaryBtn from "../PrimaryBtn/PrimaryBtn";
 import styles from "./styles";
 
-export default function CameraField({ photoUri, setPhotoUri }) {
-  const [camera, setCamera] = useState(null);
+export default function CameraField({ setPhotoUri }) {
+  const cameraRef = useRef();
 
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
@@ -30,14 +31,14 @@ export default function CameraField({ photoUri, setPhotoUri }) {
   }
 
   const takePhoto = async () => {
-    const photo = await camera.takePictureAsync();
+    const photo = await cameraRef.current.takePictureAsync();
     setPhotoUri(photo.uri);
   };
 
   return (
     <Camera
       style={styles.camera}
-      ref={setCamera}
+      ref={cameraRef}
     >
       <View style={styles.btnContainer}>
         <TouchableOpacity onPress={takePhoto}>
