@@ -122,8 +122,6 @@ const addCommentByPostID =
         date: Date.now(),
       };
 
-      console.log("comment::", comment);
-
       const postRef = doc(db, "posts", postId);
 
       await addDoc(collection(postRef, "comments"), { ...comment });

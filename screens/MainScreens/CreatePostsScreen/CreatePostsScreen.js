@@ -61,7 +61,6 @@ export default function CreatePostsScreen({ navigation }) {
       title: formState.title,
       commentsCount: 0,
       likesCount: 0,
-      comments: [],
       location: formState.location,
       locationData,
       createdAt: Date.now(),

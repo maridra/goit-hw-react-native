@@ -12,12 +12,14 @@ import styles from "./styles";
 export default function PostsScreen({ navigation }) {
   const user = useSelector(selectUser);
   const posts = useSelector(selectAllPosts);
+  console.log("posts", posts);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("useEffect");
     dispatch(postsOperations.getAllPosts());
-  }, []);
+  }, [dispatch]);
 
   const { isFontLoaded, onLayoutRootView } = useFont();
 
